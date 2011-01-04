@@ -4,9 +4,16 @@
 
 ##########
 
-from SingleThread import *
+from NeoNews.SingleThread import SingleThread 
 
 ##########
+
+# Attributes:
+#	name:		name of the current group
+#	newsgroup:	the newsgroup object, wrapper for calls to nntplib
+#	numMessages:	number of total threads on the current group, can be called using len(group)
+#	threads:	array of tuples (message number, headers{})
+#			headers.keys(): ['xref', 'from', ':lines', ':bytes', 'references', 'date', 'message-id', 'subject']
 
 class SingleGroup:
 

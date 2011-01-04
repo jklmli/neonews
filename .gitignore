@@ -9,3 +9,4 @@
 # Python 3.2 Cache Folder #
 ###########################
 /__pycache__/*
+/NeoNews/__pycache__/*

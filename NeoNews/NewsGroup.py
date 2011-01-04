@@ -6,15 +6,15 @@ import nntplib
 
 ##########
 
-from SingleGroup import *
+from NeoNews.SingleGroup import SingleGroup 
 
 ##########
 
 # Attributes:
-#	allGroups: a dictionary mapping of {group name : description}
-#	allGroupsList: a sorted list of tuples of (group name, description)
-#	group: the current group that has been selected, a SingleGroup object
-#	newsgroup: the newsgroup server that's been selected, used to make calls to nntplib
+#	allGroups:	a dictionary mapping of {group name : description}
+#	allGroupsList:	a sorted list of tuples of (group name, description)
+#	group:		the current group that has been selected, a SingleGroup object
+#	newsgroup:	the newsgroup server that's been selected, used to make calls to nntplib
 
 class NewsGroup:
 	
