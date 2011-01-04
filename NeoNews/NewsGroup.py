@@ -2,6 +2,8 @@
 
 ##########
 
+import nntplib
+
 ##########
 
 from SingleGroup import *
@@ -14,7 +16,7 @@ from SingleGroup import *
 #	group: the current group that has been selected, a SingleGroup object
 #	newsgroup: the newsgroup server that's been selected, used to make calls to nntplib
 
-class NeoNews:
+class NewsGroup:
 	
 	#####	
 	
@@ -30,13 +32,19 @@ class NeoNews:
 	
 	#####
 
-	def __init__(self, newsgroup):
-		self.newsgroup = newsgroup
+	def __init__(self, site, username, password):
+		try:
+			self.newsgroup = nntplib.NNTP_SSL('news.cs.illinois.edu', user=username, password=password)
+		except nntplib.NNTPTemporaryError:
+			raise InvalidAuth
 		response, self.allGroups = self.newsgroup.descriptions('*')
 #		print(response)
 	
 	def __del__(self):
 		self.newsgroup.quit()
+
+	def __len__(self):
+		return len(self.allGroups)
 	#####
 
 	def listGroups(self, search=None):
@@ -54,8 +62,6 @@ class NeoNews:
 		temp = self.newsgroup.group(name)
 		# group() returns (response, count, first, last, name), we are passing count, first, and name
 		self.group = SingleGroup(temp[1], temp[2], temp[4], self.newsgroup)
-#		print(self.group.name)
-#		print(len(self.group))
 		return self.group
 
 	def welcome(self):

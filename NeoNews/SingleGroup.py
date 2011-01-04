@@ -39,6 +39,8 @@ class SingleGroup:
 			print('%-42s\t\t%-42s\t\t%-42s' % (thread['message-id'][:limit], thread['subject'][:limit], thread['references'][:limit]))
 #			print(thread['xref'])
 	
+	# although messageID can be either the message number (e.g. 2000) or the message-id (e.g. <i80jj6$did$3@dcs-news1.cs.illinois.edu>),
+	# message-id should be used whenever possible, given its unique nature
 	def setThread(self, messageID):
 		self.thread = SingleThread(messageID, self.newsgroup)
 		return self.thread

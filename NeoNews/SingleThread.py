@@ -49,5 +49,3 @@ class SingleThread:
 
 	#####
 
-	def parse(self):
-		print(self.message.get_payload())

@@ -2,23 +2,20 @@
 
 ###########
 
-import nntplib
-
 ###########
 
 from NeoNews import *
 
 ###########
 
+"""
+This is a sample usage of the NeoNews module.
+"""
 def main():
-	user = input('Username?\n')
-	pw = input('Password?\n')
+	username = input('Username?\n')
+	password = input('Password?\n')
         
-	# returns the base newsgroup object
-	try:
-		newsgroup = NeoNews(nntplib.NNTP_SSL('news.cs.illinois.edu', user=user, password=pw))
-	except nntplib.NNTPTemporaryError:
-		raise NeoNews.InvalidAuth
+	newsgroup = NeoNews.NewsGroup('news.cs.illinois.edu', username, password)
 
 	newsgroup.welcome()
         
@@ -28,15 +25,15 @@ def main():
 
 #	newsgroup.group.listThreads()
 
-	newsgroup.group.setThread(1997)
+	# 1997 is a single-part message
+	# 2000 is a multi-part message
+	# use message-id normally, not number
+	# number is used here for convenience
+	newsgroup.group.setThread(2000)
 
-#	for line in newsgroup.group.thread.head:
-		# we have to use decode because we're returned a byte array, not a string
-#		print(line.decode('utf-8'))
-	
-	newsgroup.group.thread.parse()
+#	print(newsgroup.group.thread.message.get_payload()[1])
+	print(newsgroup.group.thread.message.items())
 
-#	print(newsgroup.group.threads[0][1].keys())
 
 ###########
 

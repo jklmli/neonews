@@ -2,11 +2,21 @@ h2. Neonews
 
 Neonews is intended to be a replacement for html4nntp.  With a fresh new interface and the addition of some crucial features, it'll be the new web portal to newsgroups.
 
+h2. Usage
+
+Start by instantiating a Neonews newsgroup object via @NeoNews.NewsGroup(site, username, password)@.
+Call @setGroup(group)@ and @listGroups()@ on the newsgroup.
+Call @setThread(threadID)@ and @listThreads()@ on the group.
+
 h2. Notes
 
 Neonews currently requires Python v3.2, which is in beta.  A workaround for this will be implemented soon.
 
 h2. History
+
+v0.1.3	(01/05/10)
++ moved some code around
++ added Usage to readme
 
 v0.1.1	(01/05/10)
 + threads parsed using email.message
