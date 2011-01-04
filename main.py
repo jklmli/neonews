@@ -6,7 +6,7 @@ import nntplib
 
 ###########
 
-from neonews import *
+from NeoNews import *
 
 ###########
 
@@ -16,13 +16,15 @@ def main():
         
 	# returns the base newsgroup object
 	try:
-		newsgroup = Neonews(nntplib.NNTP_SSL('news.cs.illinois.edu', user=user, password=pw))
+		newsgroup = NeoNews(nntplib.NNTP_SSL('news.cs.illinois.edu', user=user, password=pw))
 	except nntplib.NNTPTemporaryError:
-		raise Neonews.InvalidAuth
+		raise NeoNews.InvalidAuth
 
 	newsgroup.welcome()
         
-	newsgroup.getGroups()
+	newsgroup.listGroups()
+	
+	newsgroup.setGroup('class.fa10.cs225')
 
 ###########
 
