@@ -28,9 +28,9 @@ def main():
 
 #	newsgroup.group.listThreads()
 
-	newsgroup.group.setThread(2000)
+	newsgroup.group.setThread(1997)
 
-	for line in newsgroup.group.thread.body:
+	for line in newsgroup.group.thread.head:
 		# we have to use decode because we're returned a byte array, not a string
 		print(line.decode('utf-8'))
 	
