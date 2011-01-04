@@ -2,6 +2,8 @@
 
 ##########
 
+import email
+
 ##########
 
 ##########
@@ -13,7 +15,7 @@ class SingleThread:
 		self.newsgroup = newsgroup
 		
                 # the body() method returns tuple (response, info), where info is a namedtuple (number, message_id, lines[])
-		self.body = self.newsgroup.body(self.messageID)[1].lines
+#		self.body = self.newsgroup.body(self.messageID)[1].lines
 
 		################
 		# Sample Head: #
@@ -37,13 +39,15 @@ class SingleThread:
 		# X-Trace-html4nntp: isr6129.urh.uiuc.edu 130.126.212.107
 		# Xref: dcs-news1.cs.illinois.edu class.fa10.cs225:1997
 
-		self.head = self.newsgroup.head(self.messageID)[1].lines
+#		self.head = self.newsgroup.head(self.messageID)[1].lines
+		article = self.newsgroup.article(self.messageID)[1].lines
+		# see email.message
+		self.message = email.message_from_string((b'\r\n'.join(article)).decode('utf-8'))
 
 	def __del__(self):
 		pass
 
 	#####
 
-
-
-	
+	def parse(self):
+		print(self.message.get_payload())

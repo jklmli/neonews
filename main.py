@@ -30,10 +30,12 @@ def main():
 
 	newsgroup.group.setThread(1997)
 
-	for line in newsgroup.group.thread.head:
+#	for line in newsgroup.group.thread.head:
 		# we have to use decode because we're returned a byte array, not a string
-		print(line.decode('utf-8'))
+#		print(line.decode('utf-8'))
 	
+	newsgroup.group.thread.parse()
+
 #	print(newsgroup.group.threads[0][1].keys())
 
 ###########

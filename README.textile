@@ -8,6 +8,9 @@ Neonews currently requires Python v3.2, which is in beta.  A workaround for this
 
 h2. History
 
+v0.1.1	(01/05/10)
++ threads parsed using email.message
+
 v0.1.0	(01/05/10)
 + better OOP-ification, added SingleThread
 
