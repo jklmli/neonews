@@ -20,7 +20,19 @@ class SingleGroup:
 		return self.numMessages
 	
 	def listThreads(self):
-		print(self.threads[0][1].keys())
+		# threads have guaranteed headers, some include:
+		#	subject
+		#	from
+		#	date
+		#	message-id
+		#	references: the parent's message-id
 		for ID, thread in self.threads:
 			limit = 40 
-			print('%-42s\t\t%-42s\t\t%-42s' % (thread['subject'][:limit], thread['from'][:limit], thread['date'][:limit]))
+#			print('%-42s\t\t%-42s\t\t%-42s' % (thread['subject'][:limit], thread['from'][:limit], thread['date'][:limit]))
+			print('%-42s\t\t%-42s\t\t%-42s' % (thread['message-id'][:limit], thread['subject'][:limit], thread['references'][:limit]))
+	
+	def threadProcessing(self):
+		"""
+		This method will associate references with their parents
+		"""
+		pass

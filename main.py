@@ -27,6 +27,8 @@ def main():
 	newsgroup.setGroup('class.fa10.cs225')
 
 	newsgroup.group.listThreads()
+	
+#	print(newsgroup.group.threads[0][1].keys())
 
 ###########
 
