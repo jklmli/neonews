@@ -53,14 +53,16 @@ class NeoNews:
 		else:
 			groups = sorted(self.newsgroup.descriptions(search)[1].items(), key = comparator)
 		for group in groups:
-			print('%-30s\t\t%s' % (group[0], group[1]))
+			limit = 28
+			print('%-30s\t\t%s' % (group[0][:limit], group[1]))
 						
 	def setGroup(self, name):
 		temp = self.newsgroup.group(name)
-		# group() returns (response, count, first, last, name)
-		self.group = SingleGroup(temp[1], temp[4])
+		# group() returns (response, count, first, last, name), we are passing count, first, and name
+		self.group = SingleGroup(temp[1], temp[2], temp[4], self.newsgroup)
 		print(self.group.name)
 		print(len(self.group))
+		return self.group
 
 	def welcome(self):
 		print(self.newsgroup.getwelcome())

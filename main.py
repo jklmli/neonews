@@ -26,6 +26,8 @@ def main():
 	
 	newsgroup.setGroup('class.fa10.cs225')
 
+	newsgroup.group.listThreads()
+
 ###########
 
 if __name__ == "__main__":

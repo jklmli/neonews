@@ -8,8 +8,11 @@ Neonews currently requires Python v3.2, which is in beta.  A workaround for this
 
 h2. History
 
+v0.0.9	(01/10/10)
++ added threads to SingleGroup
+ 
 v0.0.7b	(01/04/10)
-+ integrated SingleGroup, overrode __len__
++ integrated SingleGroup, overrode built-in len method
 
 v0.0.7	(01/04/10)
 + added iterating group search
