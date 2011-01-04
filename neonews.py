@@ -11,8 +11,8 @@ class Neonews:
 	#####	
 	
 	class InvalidAuth(Exception):
-		def __init__(self, msg):
-			if msg is None:
+		def __init__(self, msg=''):
+			if msg is '':
 				self.message = 'Invalid credentials provided.'
 			else:
 				self.message = 'Invalid credentials provided: ' + msg
@@ -41,19 +41,3 @@ class Neonews:
 						
 	def welcome(self):
 		print(self.newsgroup.getwelcome())
-def main():
-	user = input('Username?\n')
-	pw = input('Password?\n')
-
-	# returns the base newsgroup object
-	try:
-		newsgroup = Neonews(nntplib.NNTP_SSL('news.cs.illinois.edu', user=user, password=pw))
-	except nntplib.NNTPTemporaryError:
-		raise Neonews.InvalidAuth
-
-	newsgroup.welcome()
-
-	newsgroup.getGroups()
-	
-if __name__ == "__main__":
-	main()
