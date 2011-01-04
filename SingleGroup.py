@@ -4,9 +4,14 @@
 
 ##########
 
+from SingleThread import *
+
 ##########
 
 class SingleGroup:
+
+	#####
+	
 	def __init__(self, numMessages, firstID, name, newsgroup):
 		self.numMessages = numMessages
 		self.name = name
@@ -19,6 +24,8 @@ class SingleGroup:
 	def __len__(self):
 		return self.numMessages
 	
+	#####
+
 	def listThreads(self):
 		# threads have guaranteed headers, some include:
 		#	subject
@@ -30,11 +37,15 @@ class SingleGroup:
 			limit = 40 
 #			print('%-42s\t\t%-42s\t\t%-42s' % (thread['subject'][:limit], thread['from'][:limit], thread['date'][:limit]))
 			print('%-42s\t\t%-42s\t\t%-42s' % (thread['message-id'][:limit], thread['subject'][:limit], thread['references'][:limit]))
+#			print(thread['xref'])
 	
-	def getBody(self, messageID):
-		# the body() method returns tuple (response, info), where info is a namedtuple (number, message_id, lines[])
-#		print(self.newsgroup.body(messageID))
-		return self.newsgroup.body(messageID)[1].lines
+	def setThread(self, messageID):
+		self.thread = SingleThread(messageID, self.newsgroup)
+		return self.thread
+
+	def postThread(self, *args):
+		# TODO!
+		pass
 
 	def threadProcessing(self):
 		"""

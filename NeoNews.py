@@ -2,8 +2,6 @@
 
 ##########
 
-import nntplib
-
 ##########
 
 from SingleGroup import *
@@ -38,12 +36,8 @@ class NeoNews:
 #		print(response)
 	
 	def __del__(self):
-		self.exit()
-	
-	#####
-
-	def exit(self):
 		self.newsgroup.quit()
+	#####
 
 	def listGroups(self, search=None):
 		comparator = lambda elem: elem[0]

@@ -27,8 +27,11 @@ def main():
 	newsgroup.setGroup('class.fa10.cs225')
 
 #	newsgroup.group.listThreads()
-	for line in newsgroup.group.getBody(newsgroup.group.threads[2000][1]['message-id']):
-		# we have to use decode because we're returned a bytes object, not a string
+
+	newsgroup.group.setThread(2000)
+
+	for line in newsgroup.group.thread.body:
+		# we have to use decode because we're returned a byte array, not a string
 		print(line.decode('utf-8'))
 	
 #	print(newsgroup.group.threads[0][1].keys())
