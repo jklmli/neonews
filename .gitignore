@@ -1,1 +1,15 @@
 Python-3.2b2/*
+
+# Compiled Files #
+##################
+*.pyc
+
+# Temporary Files #
+###################
+*.swp
+
+# Python 3.2 Cache Folder #
+###########################
+/__pycache__/*
+/NeoNews/__pycache__/*
+

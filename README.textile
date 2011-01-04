@@ -1,0 +1,51 @@
+h2. Neonews
+
+Neonews is intended to be a replacement for html4nntp.  With a fresh new interface and the addition of some crucial features, it'll be the new web portal to newsgroups.
+
+h2. Usage
+
+Start by instantiating a newsgroup object via @NeoNews.NewsGroup.NewsGroup(site, username, password)@.
+Call @setGroup(group)@ and @listGroups()@ on the newsgroup.
+Call @setThread(threadID)@ and @listThreads()@ on the group.
+
+h2. Notes
+
+Neonews currently requires Python v3.2, which is in beta.  A workaround for this will be implemented soon.
+
+h2. History
+
+v0.1.4	(01/05/10)
++ moved some code around
++ added Usage to readme
+
+v0.1.1	(01/05/10)
++ threads parsed using email.message
+
+v0.1.0	(01/05/10)
++ better OOP-ification, added SingleThread
+
+v0.0.9b	(01/04/10)
++ minor commenting
+
+v0.0.9	(01/04/10)
++ added threads to SingleGroup
+ 
+v0.0.7b	(01/04/10)
++ integrated SingleGroup, overrode built-in len method
+
+v0.0.7	(01/04/10)
++ added iterating group search
++ further OOP into SingleGroup
+
+v0.0.5	(01/04/10)
++ basic OOP separation
++ added readme
++ added gitignore
+
+v0.0.2	(01/03/10)
++ added login
++ added welcome
++ added group listings
+
+v0.0.0	(12/31/10)
++ project conceptualized
