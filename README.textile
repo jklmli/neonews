@@ -8,19 +8,22 @@ Neonews currently requires Python v3.2, which is in beta.  A workaround for this
 
 h2. History
 
-v0.0.7 (01/04/10)
+v0.0.7b	(01/04/10)
++ integrated SingleGroup, overrode __len__
+
+v0.0.7	(01/04/10)
 + added iterating group search
 + further OOP into SingleGroup
 
-v0.0.5 (01/04/10)
+v0.0.5	(01/04/10)
 + basic OOP separation
 + added readme
 + added gitignore
 
-v0.0.2 (01/03/10)
+v0.0.2	(01/03/10)
 + added login
 + added welcome
 + added group listings
 
-v0.0.0 (12/31/10)
+v0.0.0	(12/31/10)
 + project conceptualized

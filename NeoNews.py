@@ -6,7 +6,7 @@ import nntplib
 
 ##########
 
-import SingleGroup
+from SingleGroup import *
 
 ##########
 
@@ -56,9 +56,11 @@ class NeoNews:
 			print('%-30s\t\t%s' % (group[0], group[1]))
 						
 	def setGroup(self, name):
-		self.group = self.newsgroup.group(name)
-#		self.group.numMessages = self.group[1]
-		print(self.group)
+		temp = self.newsgroup.group(name)
+		# group() returns (response, count, first, last, name)
+		self.group = SingleGroup(temp[1], temp[4])
+		print(self.group.name)
+		print(len(self.group))
 
 	def welcome(self):
 		print(self.newsgroup.getwelcome())
