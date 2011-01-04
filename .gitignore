@@ -1,0 +1,7 @@
+# Compiled Files #
+##################
+*.pyc
+
+# Temporary Files #
+###################
+*.swp
