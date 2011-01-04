@@ -31,6 +31,11 @@ class SingleGroup:
 #			print('%-42s\t\t%-42s\t\t%-42s' % (thread['subject'][:limit], thread['from'][:limit], thread['date'][:limit]))
 			print('%-42s\t\t%-42s\t\t%-42s' % (thread['message-id'][:limit], thread['subject'][:limit], thread['references'][:limit]))
 	
+	def getBody(self, messageID):
+		# the body() method returns tuple (response, info), where info is a namedtuple (number, message_id, lines[])
+#		print(self.newsgroup.body(messageID))
+		return self.newsgroup.body(messageID)[1].lines
+
 	def threadProcessing(self):
 		"""
 		This method will associate references with their parents

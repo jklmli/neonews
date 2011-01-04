@@ -60,8 +60,8 @@ class NeoNews:
 		temp = self.newsgroup.group(name)
 		# group() returns (response, count, first, last, name), we are passing count, first, and name
 		self.group = SingleGroup(temp[1], temp[2], temp[4], self.newsgroup)
-		print(self.group.name)
-		print(len(self.group))
+#		print(self.group.name)
+#		print(len(self.group))
 		return self.group
 
 	def welcome(self):
