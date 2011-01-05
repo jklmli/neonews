@@ -1,12 +1,9 @@
-#!/usr/bin/env python3.2
-
-##########
-
 import nntplib
 
 ##########
 
-from NeoNews.SingleGroup import SingleGroup 
+from NeoNews.SingleGroup import SingleGroup
+import NeoNews.backports.nntplib as nntplib
 
 ##########
 
@@ -36,12 +33,16 @@ class NewsGroup:
 		try:
 			self.newsgroup = nntplib.NNTP_SSL('news.cs.illinois.edu', user=username, password=password)
 		except nntplib.NNTPTemporaryError:
-			raise InvalidAuth
+			raise NewsGroup.InvalidAuth
 		response, self.allGroups = self.newsgroup.descriptions('*')
 #		print(response)
 	
 	def __del__(self):
-		self.newsgroup.quit()
+		try:
+			self.newsgroup.quit()
+		# if this was caused by an exception during initialization
+		except AttributeError:
+			pass
 
 	def __len__(self):
 		return len(self.allGroups)

@@ -10,9 +10,12 @@ Call @setThread(threadID)@ and @listThreads()@ on the group.
 
 h2. Notes
 
-Neonews currently requires Python v3.2, which is in beta.  A workaround for this will be implemented soon.
+After using v2.x-compatible nntplib, the code seems to run slower?
 
 h2. History
+
+v0.1.5	(01/05/10)
++ made nntplib, code v2.x compatible
 
 v0.1.4	(01/05/10)
 + moved some code around
