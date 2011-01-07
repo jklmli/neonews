@@ -28,7 +28,7 @@ def main():
 	#CHANGE TO 'cs.classifieds' to get it to post to classifieds group. I intentionally set it to a bad group so you and I don't accidentally spam the crap out of the newsgroup
 	newsgroup.setGroup('cs.test')
 	
-	newsgroup.group.postThread('This message was sent in Python!')
+	newsgroup.group.postThread('karaman1','cs.test','test thread', 'This message was sent in Python!')
 #	newsgroup.group.listThreads()
 
 	# 4002 is a single-part message, with references
