@@ -1,4 +1,4 @@
-
+import io
 ##########
 
 from NeoNews.SingleThread import SingleThread 
@@ -49,9 +49,14 @@ class SingleGroup:
 		self.thread = SingleThread(messageID, self.newsgroup)
 		return self.thread
 
-	def postThread(self, *args):
-		# TODO!
-		pass
+	def postThread(self, text):
+		# test group is 'cs.test'..yet it doesn't let me post to there. I get this error when trying to do so: NeoNews.backports.nntplib.NNTPTemporaryError: 423 No articles in 1869-
+		# we need to be careful about how we test this. I made a post in cs.classifieds when it worked, but I don't want to spam newsgroups(especially since I didn't get cs.test posting to work
+		stream = io.StringIO()
+		e = 'From: karaman1 <karaman1@illinois.edu>\nNewsgroups: cs.classifieds\nSubject: test thread\n\n%s' %text
+		stream.write(unicode(e))
+		stream.seek(0)
+		self.newsgroup.post(stream)
 
 	def threadProcessing(self):
 		"""
