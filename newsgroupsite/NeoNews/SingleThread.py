@@ -21,6 +21,7 @@ class SingleThread:
 #		self.body = self.newsgroup.body(self.messageID)[1].lines
 #		self.head = self.newsgroup.head(self.messageID)[1].lines
 
+#		print self.newsgroup.article(self.messageID)[1].lines[4]
 		article = self.newsgroup.article(self.messageID)[1].lines
 		
 		# see email.message for full details of implementation
@@ -50,13 +51,14 @@ class SingleThread:
 		#
 		# <payload (i.e. message body and/or attachments)>
 		
-		counter = 0
-		for line in article:
-			if line.find('From:') == -1:
-				break
-			counter += 1
-		self.message = email.message_from_string((b'\r\n'.join(article[counter:])).decode('latin_1'))
-#		self.message = email.message_from_string((b'\r\n'.join(article)).decode('utf-8'))
+#		counter = 0
+#		for line in article:
+#			if line.find('From ') != -1:
+#				break
+#			counter += 1
+#		self.message = email.message_from_string((b'\r\n'.join(article[counter:])).decode('latin_1'))
+		self.message = email.message_from_string((b'\r\n'.join(article)).decode('latin_1'))
+		
 
 	def __del__(self):
 		pass
