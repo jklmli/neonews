@@ -50,12 +50,12 @@ class SingleThread:
 		#
 		# <payload (i.e. message body and/or attachments)>
 		
-		counter = 0
-		for line in article:
-			if line.find('From:') == -1:
-				break
-			counter += 1
-		self.message = email.message_from_string((b'\r\n'.join(article[counter:])).decode('latin_1'))
+#		counter = 0
+#		for line in article:
+#			if line.find('From:') == -1:
+#				break
+#			counter += 1
+		self.message = email.message_from_string((b'\r\n'.join(article)))
 #		self.message = email.message_from_string((b'\r\n'.join(article)).decode('utf-8'))
 
 	def __del__(self):
