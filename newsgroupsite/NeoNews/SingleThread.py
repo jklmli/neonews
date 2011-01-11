@@ -55,8 +55,7 @@ class SingleThread:
 			if line.find('From:') == -1:
 				break
 			counter += 1
-		self.message = email.message_from_string((b'\r\n'.join(article[counter:])).decode('utf-8'))
-		
+		self.message = email.message_from_string((b'\r\n'.join(article[counter:])).decode('latin_1'))
 #		self.message = email.message_from_string((b'\r\n'.join(article)).decode('utf-8'))
 
 	def __del__(self):
