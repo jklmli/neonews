@@ -41,13 +41,18 @@ def threads(request, group_id):
 	#			u'message-id': u'<i4ug8v$toq$1@dcs-news1.cs.illinois.edu>', 
 	#			u'subject': u'test'							})
 	for thread in threads:
-		if not db_threads.filter(messageID = thread[1][u'message-id']):
+		if not db_threads.filter(messageID = thread[1]['message-id']):
 			t = currentGroup.setThread(thread[1]['message-id'])
+			msg = t.body
 			t = t.message
-			print(t['In-Reply-To'])
-#			parent = t['In-Reply-To']
-#			if parent is None:
-#				parent = ''
-			temp = Thread(group=g, subject = t['Subject'], date = t['Date'], sender = t['From'], in_reply_to = '', message='\r\n'.join(t.get_payload()[:]), messageID=t['Message-ID'])
+			parent = t['In-Reply-To'] if t['In-Reply-To'] else ''
+#			print t.get_payload()
+#			print "Group %s" % g
+#			print "Subject %s" % t['Subject']
+#			print "Sender %s" % t['From']
+#			print "In-reply-to %s" % parent
+#			print "messageID %s" % t['Message-ID']
+#			print "====================\n====================\n====================\n"
+			temp = Thread(group=g, subject = t['Subject'].decode('latin_1'), date = t['Date'].decode('latin_1'), sender = t['From'].decode('latin_1'), in_reply_to = parent.decode('latin_1'), message=msg, messageID=t['Message-ID'].decode('latin_1'))
 			temp.save()
 	return render_to_response('groups/threads.html', {'group': g})

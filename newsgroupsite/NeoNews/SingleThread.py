@@ -18,7 +18,7 @@ class SingleThread:
 		self.newsgroup = newsgroup
 		
                 # the body() method returns tuple (response, info), where info is a namedtuple (number, message_id, lines[])
-#		body = self.newsgroup.body(self.messageID)[1].lines
+		self.body = '\r\n'.join(self.newsgroup.body(self.messageID)[1].lines).decode('latin_1')
 #		header = self.newsgroup.head(self.messageID)[1].lines
 
 #		print self.newsgroup.article(self.messageID)
