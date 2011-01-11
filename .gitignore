@@ -11,3 +11,6 @@
 /__pycache__/*
 /NeoNews/__pycache__/*
 
+# Database Files #
+##################
+*.sqlite3
