@@ -42,12 +42,12 @@ def threads(request, group_id):
 	#			u'subject': u'test'							})
 	for thread in threads:
 		if not db_threads.filter(messageID = thread[1][u'message-id']):
-			t = currentGroup.setThread(thread[1]['message-id'])
-			t = t.message
+			tThread = currentGroup.setThread(thread[1]['message-id'])
+			t = tThread.message
 			print(t['In-Reply-To'])
 			parent = t['In-Reply-To']
 			if parent is None:
 				parent = ''
-			temp = Thread(group=g, subject = t['Subject'].decode('latin_1'), date = t['Date'].decode('latin_1'), sender = t['From'].decode('latin_1'), in_reply_to = parent.decode('latin_1'), message=('\r\n'.join(t.get_payload()[:])).decode('latin_1'), messageID=t['Message-ID'].decode('latin_1'))
+			temp = Thread(group=g, subject = t['Subject'].decode('latin_1'), date = t['Date'].decode('latin_1'), sender = t['From'].decode('latin_1'), in_reply_to = parent.decode('latin_1'), message=tThread.body, messageID=t['Message-ID'].decode('latin_1'))
 			temp.save()
 	return render_to_response('groups/threads.html', {'group': g})

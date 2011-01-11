@@ -22,6 +22,7 @@ class SingleThread:
 #		self.head = self.newsgroup.head(self.messageID)[1].lines
 
 		article = self.newsgroup.article(self.messageID)[1].lines
+		self.body = (b'\r\n'.join(self.newsgroup.body(self.messageID)[1].lines)).decode('latin_1')
 		
 		# see email.message for full details of implementation
 		###################
