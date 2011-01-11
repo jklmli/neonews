@@ -35,7 +35,8 @@ def threads(request, group_id):
 		if not db_threads.filter(in_reply_to = None):
 			t = currentGroup.setThread(thread[1]['message-id'])
 			t = t.message
+			print(t)
 			print(t.items())
-			temp = Thread(group=g, subject=t['subject'], date=t['date'], sender=t['from'], in_reply_to=t['in-reply-to'], messageID=t['message-id'], message=t.get_payload())
+			temp = Thread(group=g, subject=t['subject'], date=t['date'], sender=t['from'], in_reply_to=t['in-reply-to'], messageID=t['message-id'], message='\r\n'.join(t.get_payload()[:]))
 			temp.save()
 	return render_to_response('groups/threads.html', {'group': g})
