@@ -19,9 +19,7 @@ class SingleThread:
 		
                 # the body() method returns tuple (response, info), where info is a namedtuple (number, message_id, lines[])
 #		body = self.newsgroup.body(self.messageID)[1].lines
-#		print body
 #		header = self.newsgroup.head(self.messageID)[1].lines
-#		print self.newsgroup.head(self.messageID)
 
 #		print self.newsgroup.article(self.messageID)
 		article = self.newsgroup.article(self.messageID)[1].lines
@@ -52,14 +50,8 @@ class SingleThread:
 		#
 		# <payload (i.e. message body and/or attachments)>
 		
-		counter = 0
-		for line in article:
-			if line.find('From:') != -1:
-				break
-			counter += 1
-		self.message = email.message_from_string((b'\r\n'.join(article[counter:])))
-#		self.message = email.message_from_string((b'\r\n'.join(article))
-#		self.message = [header,body]
+
+		self.message = email.message_from_string((b'\r\n'.join(article)))
 
 	def __del__(self):
 		pass

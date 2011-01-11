@@ -8,7 +8,8 @@ class Thread(models.Model):
 	#max_length properties are subject to change
 	group = models.ForeignKey(Group)
 	subject = models.CharField(max_length=75)
-	date = models.DateTimeField('date published', null=True)
+#	date = models.DateTimeField('date published', null=True)
+	date = models.CharField(max_length=50)
 	sender = models.CharField(max_length=50)
 	in_reply_to = models.CharField(max_length=75, blank=True)
 	message = models.CharField(max_length=20000)
