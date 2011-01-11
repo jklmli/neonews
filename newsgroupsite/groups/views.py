@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from groups.models import Group
+from groups.models import Group, Thread
 from NeoNews.NewsGroup import NewsGroup
 
 newsgroup = ''
@@ -27,11 +27,15 @@ def groups(request):
 
 def threads(request, group_id):
 	g = Group.objects.get(pk=group_id)
-	newsgroup.setGroup(g.name)
-	threads = newsgroup.getThreads()
+	currentGroup = newsgroup.setGroup(g.name)
+	threads = currentGroup.getThreads()
 	db_threads = Thread.objects.all()
-#	print threads
-#	for thread in threads:
-#		if not db_threads.filter(messageID = thread.messageID):
 			
+	for thread in threads:
+		if not db_threads.filter(in_reply_to = None):
+			t = currentGroup.setThread(thread[1]['message-id'])
+			t = t.message
+			print(t.items())
+			temp = Thread(group=g, subject=t['subject'], date=t['date'], sender=t['from'], in_reply_to=t['in-reply-to'], messageID=t['message-id'], message=t.get_payload())
+			temp.save()
 	return render_to_response('groups/threads.html', {'group': g})
