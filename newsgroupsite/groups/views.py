@@ -44,7 +44,7 @@ def threads(request, group_id):
 		if not db_threads.filter(messageID = thread[1][u'message-id']):
 			tThread = currentGroup.setThread(thread[1]['message-id'])
 			t = tThread.message
-			print(t['In-Reply-To'])
+#			print(t['In-Reply-To'])
 			parent = t['In-Reply-To']
 			if parent is None:
 				parent = ''
