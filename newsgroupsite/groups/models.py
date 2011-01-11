@@ -3,7 +3,6 @@ from django.db import models
 class Group(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=150)
-	thread_count = models.IntegerField()
 	
 class Thread(models.Model):
 	#max_length properties are subject to change

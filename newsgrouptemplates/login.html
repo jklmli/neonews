@@ -1,0 +1,9 @@
+<h1>NeoNews Login Page</h1>
+<form action="/groups/" method="POST">
+	{% csrf_token %}
+	<label for="submitted_username" >Username</label><br />
+	<input type="text" id="submitted_username" name='submitted_username'/><br />
+	<label for="submitted_password" >Password</label><br />
+	<input type="password" id="submitted_password" name='submitted_password'/><br />
+	<input type='submit' />
+</form>

@@ -3,10 +3,13 @@ from django.template import RequestContext
 from groups.models import Group
 from NeoNews.NewsGroup import NewsGroup
 
+newsgroup = ''
+
 def login(request):
 	return render_to_response('login.html',context_instance=RequestContext(request))
 
-def index(request):
+def groups(request):
+	global newsgroup
 	try:
 		username = request.POST['submitted_username']
 		password = request.POST['submitted_password']
@@ -18,10 +21,17 @@ def index(request):
 		db_groups = Group.objects.all()
 		for group in groups:
 			if not db_groups.filter(name=group[0]):
-				g = Group(name=group[0], description = group[1], thread_count = 1 + len(db_groups[0].thread_set.all()))
+				g = Group(name=group[0], description = group[1])
 				g.save()
-		return render_to_response('groups/index.html', {'group_list' : db_groups})
+		return render_to_response('groups/groups.html', {'group_list' : db_groups})
 
 def threads(request, group_id):
-	g = get_object_or_404(Group, pk=group_id)
+	g = Group.objects.get(pk=group_id)
+	newsgroup.setGroup(g.name)
+	threads = newsgroup.getThreads()
+	db_threads = Thread.objects.all()
+#	print threads
+#	for thread in threads:
+#		if not db_threads.filter(messageID = thread.messageID):
+			
 	return render_to_response('groups/threads.html', {'group': g})

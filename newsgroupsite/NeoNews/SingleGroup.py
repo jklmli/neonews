@@ -42,7 +42,16 @@ class SingleGroup:
 #			print('%-42s\t\t%-42s\t\t%-42s' % (thread['subject'][:limit], thread['from'][:limit], thread['date'][:limit]))
 			print('%-42s\t\t%-42s\t\t%-42s' % (thread['message-id'][:limit], thread['subject'][:limit], thread['references'][:limit]))
 #			print(thread['xref'])
-	
+
+	def getThreads(self):
+		# threads have guaranteed headers, some include:
+		#	subject
+		#	from
+		#	date
+		#	message-id
+		#	references: the parent's message-id
+		return self.threads
+			
 	# although messageID can be either the message number (e.g. 2000) or the message-id (e.g. <i80jj6$did$3@dcs-news1.cs.illinois.edu>),
 	# message-id should be used whenever possible, given its unique nature
 	def setThread(self, messageID):
