@@ -25,8 +25,8 @@ def groups(request):
 				g.save()
 		return render_to_response('groups/groups.html', {'group_list' : db_groups})
 
-def threads(request, group_id):
-	g = Group.objects.get(pk=group_id)
+def threads(request, group_name):
+	g = Group.objects.get(name=group_name)
 	currentGroup = newsgroup.setGroup(g.name)
 	threads = newsgroup.group.getThreads()
 	db_threads = Thread.objects.all()
@@ -51,3 +51,7 @@ def threads(request, group_id):
 			temp = Thread(group=g, subject = t['Subject'].decode('latin_1'), date = t['Date'].decode('latin_1'), sender = t['From'].decode('latin_1'), in_reply_to = parent.decode('latin_1'), message=tThread.body, messageID=t['Message-ID'].decode('latin_1'))
 			temp.save()
 	return render_to_response('groups/threads.html', {'group': g})
+
+def thread(request, thread_id):
+	t = Thread.objects.get(id=thread_id)
+	return render_to_response('groups/thread.html', {'thread' : t})
