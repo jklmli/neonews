@@ -15,7 +15,7 @@ def groups(request):
 		password = request.POST['submitted_password']
 		newsgroup = NewsGroup('news.cs.illinois.edu', username, password)
 	except(Exception):
-		return redirect('127.0.0.1:8000/')
+		return redirect('/')
 	else:
 		groups = newsgroup.getGroups()
 		db_groups = Group.objects.all()
