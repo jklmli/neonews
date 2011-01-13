@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from groups.models import Group, Thread
 from NeoNews.NewsGroup import NewsGroup
@@ -15,7 +15,7 @@ def groups(request):
 		password = request.POST['submitted_password']
 		newsgroup = NewsGroup('news.cs.illinois.edu', username, password)
 	except(Exception):
-		return render_to_response('login.html', {'error_message': "Invalid username/password"}, context_instance=RequestContext(request))
+		return redirect('127.0.0.1:8000/')
 	else:
 		groups = newsgroup.getGroups()
 		db_groups = Group.objects.all()
