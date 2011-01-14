@@ -54,10 +54,9 @@ class SingleGroup:
 			
 	# although messageID can be either the message number (e.g. 2000) or the message-id (e.g. <i80jj6$did$3@dcs-news1.cs.illinois.edu>),
 	# message-id should be used whenever possible, given its unique nature
-	def setThread(self, messageID):
-		self.thread = SingleThread(messageID, self.newsgroup)
-		return self.thread
-
+	def getThread(self, messageID):
+		return SingleThread(messageID, self.newsgroup)
+		
 	def postThread(self, netid, group, subject, text):
 		# test group is 'cs.test'..yet it doesn't let me post to there. I get this error when trying to do so: NeoNews.backports.nntplib.NNTPTemporaryError: 423 No articles in 1869-
 		# we need to be careful about how we test this. I made a post in cs.classifieds when it worked, but I don't want to spam newsgroups(especially since I didn't get cs.test posting to work

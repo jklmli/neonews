@@ -21,7 +21,7 @@ class SingleThread:
 #		header = self.newsgroup.head(self.messageID)[1].lines
 
 #		print self.newsgroup.article(self.messageID)
-		article = self.newsgroup.article(self.messageID)[1].lines
+		headers = self.newsgroup.head(self.messageID)[1].lines
 		self.body = (b'\r\n'.join(self.newsgroup.body(self.messageID)[1].lines)).decode('latin_1')
 		
 		# see email.message for full details of implementation
@@ -52,7 +52,7 @@ class SingleThread:
 		# <payload (i.e. message body and/or attachments)>
 		
 
-		self.message = email.message_from_string((b'\r\n'.join(article)))
+		self.headers = email.message_from_string((b'\r\n'.join(headers)))
 
 	def __del__(self):
 		pass

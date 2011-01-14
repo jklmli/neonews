@@ -1,9 +1,33 @@
+import threading
+
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from groups.models import Group, Thread
 from NeoNews.NewsGroup import NewsGroup
 
 newsgroup = None
+g = None
+currentGroup = None
+db_lock = threading.Lock()
+thread_limit = threading.Semaphore(300)
+
+class updateDBThread(threading.Thread):
+	def __init__(self, thread):
+		threading.Thread.__init__(self)
+		self.thread = thread
+						         
+	def run(self):
+		tThread = self.thread
+		t = tThread.headers
+		print(t) 
+		parent = t['In-Reply-To']
+		if parent is None:
+			parent = ''
+		temp = Thread(group=g, subject = t['Subject'].decode('latin_1'), date = t['Date'].decode('latin_1'), sender = t['From'].decode('latin_1'), in_reply_to = parent.decode('latin_1'), message=tThread.body, messageID=t['Message-ID'].decode('latin_1'))
+		db_lock.acquire()
+		temp.save()
+		db_lock.release()
+		thread_limit.release()
 
 def login(request):
 	return render_to_response('login.html',context_instance=RequestContext(request))
@@ -26,6 +50,7 @@ def groups(request):
 		return render_to_response('groups/groups.html', {'group_list' : db_groups})
 
 def threads(request, group_id):
+	global g, currentGroup
 	g = Group.objects.get(id=group_id)
 	currentGroup = newsgroup.setGroup(g.name)
 	threads = newsgroup.group.getThreads()
@@ -40,16 +65,24 @@ def threads(request, group_id):
 	#			u'date': u'Mon, 23 Aug 2010 13:56:31 -0500', 
 	#			u'message-id': u'<i4ug8v$toq$1@dcs-news1.cs.illinois.edu>', 
 	#			u'subject': u'test'							})
+
+	SingleThreadList = []
+	print('Downloading Data from server:')
 	for thread in threads:
-		if not db_threads.filter(messageID = thread[1][u'message-id']):
-			tThread = currentGroup.setThread(thread[1]['message-id'])
-			t = tThread.message
-#			print(t['In-Reply-To'])
-			parent = t['In-Reply-To']
-			if parent is None:
-				parent = ''
-			temp = Thread(group=g, subject = t['Subject'].decode('latin_1'), date = t['Date'].decode('latin_1'), sender = t['From'].decode('latin_1'), in_reply_to = parent.decode('latin_1'), message=tThread.body, messageID=t['Message-ID'].decode('latin_1'))
-			temp.save()
+		print('%i / %i' % (len(SingleThreadList), len(threads)))
+		SingleThreadList.append(currentGroup.getThread(thread[1]['message-id']))
+
+	threadList = []
+	for elem in SingleThreadList:
+		print threading.activeCount()
+		temp = updateDBThread(elem)
+		thread_limit.acquire()
+		temp.start()
+		threadList.append(temp)
+
+	for elem in threadList:
+		elem.join()
+
 	return render_to_response('groups/threads.html', {'group': g})
 
 def thread(request, thread_id):
