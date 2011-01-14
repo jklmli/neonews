@@ -25,8 +25,8 @@ def groups(request):
 				g.save()
 		return render_to_response('groups/groups.html', {'group_list' : db_groups})
 
-def threads(request, group_name):
-	g = Group.objects.get(name=group_name)
+def threads(request, group_id):
+	g = Group.objects.get(id=group_id)
 	currentGroup = newsgroup.setGroup(g.name)
 	threads = newsgroup.group.getThreads()
 	db_threads = Thread.objects.all()

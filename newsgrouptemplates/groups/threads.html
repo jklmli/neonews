@@ -1,7 +1,7 @@
 {% if group.thread_set.all %}
 	<ul>
 	{% for thread in group.thread_set.all %}
-		<li><a href="/groups/{{ group.name }}/{{ thread.id }}">{{ thread.subject }}</a>{{thread.sender}} {{thread.date}}</li>
+		<li><a href="/groups/{{ group.id }}/{{ thread.id }}">{{ thread.subject }}</a>{{thread.sender}} {{thread.date}}</li>
 	{% endfor %}
 	</ul>
 {% else %}
