@@ -66,16 +66,19 @@ def threads(request, group_id):
 	#			u'message-id': u'<i4ug8v$toq$1@dcs-news1.cs.illinois.edu>', 
 	#			u'subject': u'test'							})
 
-	SingleThreadList = []
-	print('Downloading Data from server:')
-	for thread in threads:
-		print('%i / %i' % (len(SingleThreadList), len(threads)))
-		SingleThreadList.append(currentGroup.getThread(thread[1]['message-id']))
+#	SingleThreadList = []
+#	print('Downloading Data from server:')
+#	for thread in threads:
+#		print('%i / %i' % (len(SingleThreadList), len(threads)))
+#		SingleThreadList.append(currentGroup.getThread(thread[1]['message-id']))
 
 	threadList = []
-	for elem in SingleThreadList:
+#	for elem in SingleThreadList:
+	for thread in threads:
+		
 		print threading.activeCount()
-		temp = updateDBThread(elem)
+#		temp = updateDBThread(elem)
+		temp = updateDBThread(currentGroup.getThread(thread[1]['message-id']))
 		thread_limit.acquire()
 		temp.start()
 		threadList.append(temp)
