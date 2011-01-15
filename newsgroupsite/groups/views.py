@@ -19,7 +19,7 @@ class updateDBThread(threading.Thread):
 	def run(self):
 		tThread = self.thread
 		t = tThread.headers
-		print(t) 
+#		print(t) 
 		parent = t['In-Reply-To']
 		if parent is None:
 			parent = ''
@@ -76,7 +76,7 @@ def threads(request, group_id):
 #	for elem in SingleThreadList:
 	for thread in threads:
 		
-		print threading.activeCount()
+#		print threading.activeCount()
 #		temp = updateDBThread(elem)
 		temp = updateDBThread(currentGroup.getThread(thread[1]['message-id']))
 		thread_limit.acquire()

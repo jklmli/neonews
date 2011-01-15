@@ -1,8 +1,9 @@
+<input type="text" id="search" name="search" /><br />
 {% if group_list %}
 	<ul>
-	{% for group in group_list %}
-		<li><a href="/groups/{{ group.id }}/">{{ group.name }}</a></li>
-	{% endfor %}
+		{% for group in group_list %}
+			<li><a href="/groups/{{ group.id }}/">{{ group.name }}</a></li>
+		{% endfor %}
 	</ul>
 {% else %}
 	<p>No groups are available.</p>
