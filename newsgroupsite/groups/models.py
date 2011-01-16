@@ -4,7 +4,7 @@ class Group(models.Model):
 	name = models.CharField(max_length=50, unique=True)
 	description = models.CharField(max_length=150)
 	
-class Thread(models.Model):
+class Post(models.Model):
 	#max_length properties are subject to change
 	group = models.ForeignKey(Group)
 	subject = models.CharField(max_length=75)
