@@ -8,6 +8,8 @@ from django.conf import settings
 urlpatterns = patterns('',
 	(r'^$', 'groups.views.login'),
 	(r'^groups/', include('groups.urls')),
+	(r'^staticmedia/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT }),
+
 	# Uncomment the admin/doc line below to enable admin documentation:
 	# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
