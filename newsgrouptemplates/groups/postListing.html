@@ -1,0 +1,9 @@
+{% if group.post_set.all %}
+	<ul>
+	{% for post in group.post_set.all %}
+		<li><a href="/groups/{{ group.id }}/{{ post.id }}">{{ post.subject }}</a>{{post.sender}} {{post.date}}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>No posts are available.</p>
+{% endif %}
