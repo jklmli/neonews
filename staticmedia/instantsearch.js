@@ -1,8 +1,12 @@
 $(document).ready(function(){
-//USE KEYUP EVENTHANDLER INSTEAD!!!
-	$('input').keypress(function(){
+	groups = $('li');
+//Keyup fixes the issues of backspace
+	$('input').keyup(function(){
 		searchtext = $(this).val();
-		groups = $("a:contains("+searchtext+")");
-		console.log(groups);
+		$('li').remove();
+		$('ul').after().html(groups);
+		groupquery = $("li:contains("+searchtext+")");
+		$('li').remove();
+		$('ul').after().html(groupquery);
 	});
 });
