@@ -5,6 +5,7 @@ from django.template import RequestContext
 from groups.models import Group, Post 
 from NeoNews.NewsGroup import NewsGroup
 import Queue
+from django.core import serializers
 
 newsgroup = None
 g = None
@@ -69,7 +70,9 @@ def groups(request):
 			if not db_groups.filter(name=group[0]):
 				g = Group(name=group[0], description = group[1])
 				g.save()
-		return render_to_response('groups/groups.html', {'group_list' : db_groups})
+
+		gserial = serializers.serialize("json", db_groups)
+		return render_to_response('groups/groups.html', {'groups' : db_groups, 'gserial': gserial})
 
 def postListing(request, group_id):
 	global g, currentGroup
@@ -102,8 +105,8 @@ def postListing(request, group_id):
 		elem.join()
 
 	print('done processing, now rendering...')
-
-	return render_to_response('groups/postListing.html', {'group': g})
+	gserial = serializers.serialize("json", g.post_set.all())
+	return render_to_response('groups/postListing.html', {'group': g, 'gserial' : gserial})
 
 def singlePost(request, post_id):
 	t = Post.objects.get(id=post_id)
