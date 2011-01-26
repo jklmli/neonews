@@ -7,6 +7,7 @@ class Group(models.Model):
 class Post(models.Model):
 	#max_length properties are subject to change
 	group = models.ForeignKey(Group)
+	children = models.CharField(max_length=20000)
 	subject = models.CharField(max_length=75)
 	date = models.CharField(max_length=50)
 	sender = models.CharField(max_length=50)

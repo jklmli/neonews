@@ -22,9 +22,10 @@ class processPostThread(threading.Thread):
 		tThread = self.post
 		t = tThread.headers
 #		print(t) 
-		parent = t['In-Reply-To']
-		if parent is None:
-			parent = ''
+		parent = t['In-Reply-To'] if t['In-Reply-To']  else ''
+#		parent = t['In-Reply-To']
+#		if parent is None:
+#			parent = ''
 		temp = Post(group=g, subject = t['Subject'].decode('latin_1'), date = t['Date'].decode('latin_1'), sender = t['From'].decode('latin_1'), in_reply_to = parent.decode('latin_1'), message=tThread.body, messageID=t['Message-ID'].decode('latin_1'))
 		saveToDB.put(temp)
 #		thread_limit.release()
@@ -103,6 +104,22 @@ def postListing(request, group_id):
 
 	for elem in threadList:
 		elem.join()
+
+	i = 1
+	for post in posts:
+		temp = Post.objects.get(messageID = post[1]['message-id'])
+		if temp.in_reply_to:
+			try:
+				t = Post.objects.get(messageID = temp.in_reply_to)
+				t.children += ' %s' % temp.messageID
+				t.save()
+			except Post.DoesNotExist:
+				# school is a noobnoobnoob
+				print('DoesNotExist Error!')
+				temp.in_reply_to = ''
+				temp.save()
+		print(i)
+		i += 1
 
 	print('done processing, now rendering...')
 	gserial = serializers.serialize("json", g.post_set.all())
