@@ -6,6 +6,7 @@ from groups.models import Group, Post
 from NeoNews.NewsGroup import NewsGroup
 import Queue
 from django.core import serializers
+import time
 
 newsgroup = None
 g = None
@@ -126,5 +127,11 @@ def postListing(request, group_id):
 	return render_to_response('groups/postListing.html', {'group': g, 'gserial' : gserial})
 
 def singlePost(request, post_id):
+	t1 = time.time()
 	t = Post.objects.get(id=post_id)
-	return render_to_response('groups/singlePost.html', {'post' : t})
+	t2 = time.time()
+	gserial = serializers.serialize("json", g.post_set.all())
+	t3 = time.time()
+	print(t2-t1)
+	print(t3-t2)
+	return render_to_response('groups/singlePost.html', {'post' : t, "gserial": gserial})
