@@ -8,11 +8,9 @@ import Queue
 from django.core import serializers
 import time
 
-newsgroup = None
 g = None
 currentGroup = None
-#thread_limit = threading.Semaphore(300)
-saveToDB = Queue.Queue()
+findChildrenQueue = Queue.Queue()
 
 class processPostThread(threading.Thread):
 	def __init__(self, post):
@@ -24,23 +22,34 @@ class processPostThread(threading.Thread):
 		t = tThread.headers
 #		print(t) 
 		parent = t['In-Reply-To'] if t['In-Reply-To'] else (t['References'].split().pop() if t['References'] else '')
-#		parent = t['In-Reply-To']
-#		if parent is None:
-#			parent = ''
 		temp = Post(group=g, subject = t['Subject'].decode('latin_1'), date = t['Date'].decode('latin_1'), sender = t['From'].decode('latin_1'), in_reply_to = parent.decode('latin_1'), message=tThread.body, messageID=t['Message-ID'].decode('latin_1'))
-		saveToDB.put(temp)
-#		thread_limit.release()
+		findChildrenQueue.put(temp)
 
-class DBSaveThread(threading.Thread):
+class findChildrenThread(threading.Thread):
 	def __init__(self, numToProcess):
 		threading.Thread.__init__(self)
 		self.numToProcess = numToProcess
 	def run(self):
+		childrenDict = {}
+		saveToDBList = []
 		while(self.numToProcess > 0):
-			print(self.numToProcess)
-			temp = saveToDB.get()
-			temp.save()
+			temp = findChildrenQueue.get()
+			if temp.in_reply_to:
+				# look into defaultdict in the python stdlib
+				# also need to decouple this from js code, which throwing away the first result of a split(), which forces this to add an extra space in front
+				if not(temp.in_reply_to in childrenDict.keys()):
+					childrenDict[temp.in_reply_to] = ""
+				childrenDict[temp.in_reply_to] += " %s" % temp.messageID
+			saveToDBList.append(temp)
 			self.numToProcess -= 1
+
+		i = 1
+		for elem in saveToDBList:
+			print(i)
+			i += 1
+			if elem.messageID in childrenDict.keys():
+				elem.children = childrenDict[elem.messageID]
+			elem.save()
 
 def newPosts(posts, db_posts):
 	i = 0
@@ -68,8 +77,11 @@ def groups(request):
 	else:
 		groups = newsgroup.getGroups()
 		db_groups = Group.objects.all()
+		i = 1
 		for group in groups:
 			if not db_groups.filter(name=group[0]):
+				print(i)
+				i += 1
 				g = Group(name=group[0], description = group[1])
 				g.save()
 
@@ -93,34 +105,18 @@ def postListing(request, group_id):
 	#			u'message-id': u'<i4ug8v$toq$1@dcs-news1.cs.illinois.edu>', 
 	#			u'subject': u'test'							})
 
-	threadList = [DBSaveThread(len(posts))]
+	threadList = [findChildrenThread(len(posts))]
 	threadList[0].start()
 
 	for post in posts:
 		
-#		print threading.activeCount()
+		print(threading.activeCount())
 		temp = processPostThread(currentGroup.getPost(post[1]['message-id']))
 		temp.start()
 		threadList.append(temp)
 
 	for elem in threadList:
 		elem.join()
-
-	i = 1
-	for post in posts:
-		temp = Post.objects.get(messageID = post[1]['message-id'])
-		if temp.in_reply_to:
-			try:
-				t = Post.objects.get(messageID = temp.in_reply_to)
-				t.children += ' %s' % temp.messageID
-				t.save()
-			except Post.DoesNotExist:
-				# school is a noobnoobnoob
-				print('DoesNotExist Error!')
-				temp.in_reply_to = ''
-				temp.save()
-		print(i)
-		i += 1
 
 	print('done processing, now rendering...')
 	gserial = serializers.serialize("json", g.post_set.all())
