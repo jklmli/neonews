@@ -23,7 +23,7 @@ class processPostThread(threading.Thread):
 		tThread = self.post
 		t = tThread.headers
 #		print(t) 
-		parent = t['In-Reply-To'] if t['In-Reply-To']  else ''
+		parent = t['In-Reply-To'] if t['In-Reply-To'] else (t['References'].split().pop() if t['References'] else '')
 #		parent = t['In-Reply-To']
 #		if parent is None:
 #			parent = ''
@@ -129,6 +129,7 @@ def postListing(request, group_id):
 def singlePost(request, post_id):
 	t1 = time.time()
 	t = Post.objects.get(id=post_id)
+	print(t.children)
 	t2 = time.time()
 	gserial = serializers.serialize("json", g.post_set.all())
 	t3 = time.time()
