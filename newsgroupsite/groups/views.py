@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from groups.models import Group, Post 
 from django.core import serializers
+from django.db import transaction
 
 #import time
 
@@ -15,6 +16,7 @@ postsSerial = None
 def login(request):
 	return render_to_response('login.html',context_instance=RequestContext(request))
 
+@transaction.commit_manually()
 def groups(request):
 	global newsgroup, groupsSerial
 	try:
@@ -33,7 +35,7 @@ def groups(request):
 				i += 1
 				g = Group(name=group[0], description = group[1])
 				g.save()
-
+		transaction.commit()
 		if groupsSerial is None:
 			groupsSerial = serializers.serialize("json", db_groups)
 		return render_to_response('groups/groups.html', {'groups' : db_groups, 'gserial': groupsSerial})

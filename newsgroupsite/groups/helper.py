@@ -2,6 +2,7 @@ import threading
 import Queue
 
 from groups.models import Group, Post 
+from django.db import transaction
 
 class processPostThread(threading.Thread):
 	def __init__(self, post, findChildrenQueue, currentGroup):
@@ -24,6 +25,7 @@ class findChildrenThread(threading.Thread):
 		self.numToProcess = numToProcess
 		self.findChildrenQueue = findChildrenQueue
 
+	@transaction.commit_manually
 	def run(self):
 		childrenDict = {}
 		saveToDBList = []
@@ -45,6 +47,7 @@ class findChildrenThread(threading.Thread):
 			if elem.messageID in childrenDict.keys():
 				elem.children = childrenDict[elem.messageID]
 			elem.save()
+		transaction.commit()
 
 def newPosts(posts, db_posts):
 	i = 0
