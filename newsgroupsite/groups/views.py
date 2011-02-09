@@ -71,11 +71,12 @@ def postListing(request, group_id):
 		elem.join()
 
 	print('done processing, now rendering...')
-	if postsSerial is None:
-		postsSerial = serializers.serialize("json", currentGroup.post_set.all())
-	return render_to_response('groups/postListing.html', {'group': currentGroup, 'gserial' : postsSerial})
+
+	if postsSerial == None or postsSerial[1] != currentGroup.name:
+		postsSerial = (serializers.serialize("json", currentGroup.post_set.all()), currentGroup.name)
+	return render_to_response('groups/postListing.html', {'group': currentGroup, 'gserial' : postsSerial[0]})
 
 def singlePost(request, post_id):
 	t = Post.objects.get(id=post_id)
 	#gserial = serializers.serialize("json", currentGroup.post_set.all())
-	return render_to_response('groups/singlePost.html', {'post' : t, "gserial": postsSerial})
+	return render_to_response('groups/singlePost.html', {'post' : t, "gserial": postsSerial[0]})

@@ -27,7 +27,7 @@ class SingleGroup:
 	
 	def __len__(self):
 		return self.numMessages
-	
+
 	#####
 
 	def listPosts(self):
