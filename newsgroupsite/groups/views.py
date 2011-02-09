@@ -40,6 +40,7 @@ def groups(request):
 			groupsSerial = serializers.serialize("json", db_groups)
 		return render_to_response('groups/groups.html', {'groups' : db_groups, 'gserial': groupsSerial})
 
+@transaction.commit_manually()
 def postListing(request, group_id):
 	global postsSerial
 	currentGroup = Group.objects.get(id=group_id)
@@ -57,20 +58,44 @@ def postListing(request, group_id):
 	#			u'message-id': u'<i4ug8v$toq$1@dcs-news1.cs.illinois.edu>', 
 	#			u'subject': u'test'							})
 
-	findChildrenQueue = Queue.Queue()
+	initialSaveQueue = Queue.Queue()
 
-	threadList = [findChildrenThread(len(posts), findChildrenQueue)]
-	threadList[0].start()
+	threadList = []
 
 	for post in posts:
-		
 		#print(threading.activeCount())
-		temp = processPostThread(newsgroup.group.getPost(post[1]['message-id']), findChildrenQueue, currentGroup)
+		temp = processPostThread(newsgroup.group.getPost(post[1]['message-id']), initialSaveQueue, currentGroup)
 		temp.start()
 		threadList.append(temp)
 
 	for elem in threadList:
 		elem.join()
+
+	while initialSaveQueue.empty() != True:
+		initialSaveQueue.get().save()
+	
+	transaction.commit()
+	print('done first save (no children)')
+
+	secondSave = []
+
+	for post in posts:
+		child = Post.objects.get(messageID = post[1]['message-id'])
+		if child.in_reply_to != '':
+			try:
+				parent = Post.objects.get(messageID = child.in_reply_to)
+				parent.children += ' %s' % child.messageID
+				secondSave.append(parent)
+			except Post.DoesNotExist:
+				pass
+	#		if parent.children is None:
+	#			parent.children = ''
+	#		parent.children += ' %s' % child.messageID
+	#		parent.save()
+	
+	for elem in secondSave:
+		elem.save()
+	transaction.commit()
 
 	print('done processing, now rendering...')
 
