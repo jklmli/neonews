@@ -29,6 +29,7 @@ class findChildrenThread(threading.Thread):
 	def run(self):
 		childrenDict = {}
 		saveToDBList = []
+		print('Downloading...')
 		while(self.numToProcess > 0):
 			temp = self.findChildrenQueue.get()
 			if temp.in_reply_to:
@@ -39,15 +40,25 @@ class findChildrenThread(threading.Thread):
 				childrenDict[temp.in_reply_to] += " %s" % temp.messageID
 			saveToDBList.append(temp)
 			self.numToProcess -= 1
-
+		print('Finished.')
+		print('Saving...')
 		i = 1
 		for elem in saveToDBList:
 			print(i)
 			i += 1
 			if elem.messageID in childrenDict.keys():
 				elem.children = childrenDict[elem.messageID]
+				del childrenDict[elem.messageID]
 			elem.save()
+		for elem in childrenDict.keys():
+			try:
+				parent = Post.objects.get(messageID = elem)
+				parent.children += childrenDict[elem]
+				parent.save()
+			except Post.DoesNotExist:
+				print('Missing parent %s associated with children%s' % (elem, childrenDict[elem]))
 		transaction.commit()
+		print('Finished.')
 
 def newPosts(posts, db_posts):
 	i = 0
