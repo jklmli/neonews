@@ -13,7 +13,7 @@ class Post(models.Model):
 	sender = models.CharField(max_length=50)
 	in_reply_to = models.CharField(max_length=75)
 	message = models.CharField(max_length=20000)
-	messageID = models.CharField(max_length=75)
+	messageID = models.CharField(max_length=75, unique=True)
 
 	class Meta:
 		ordering = ['-id']
